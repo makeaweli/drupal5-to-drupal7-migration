@@ -111,8 +111,15 @@ function gemini_migrate_d5_insert_nodes($node_types) {
     // Insert each node into it's respective tables
     foreach($nodes as $n) {
       gemini_migrate_d5_insert_node($n);
-      gemini_migrate_d5_insert_node_revision_body($n);
-      gemini_migrate_d5_insert_node_data_body($n);
+
+      // insert into {field_revision_body}
+      gemini_migrate_d5_insert_field_revision_body($n);
+
+      // insert into {field_data_body}
+      gemini_migrate_d5_insert_field_data_body($n);
+
+      // insert into {node_revision}
+      gemini_migrate_d5_insert_node_revision($n);
 
     }
 
@@ -121,6 +128,7 @@ function gemini_migrate_d5_insert_nodes($node_types) {
 
 /* 
  * Insert node into Drupal 7
+ * @n Drupal 5 {node} object
  */
 function gemini_migrate_d5_insert_node($n) {
 
@@ -144,16 +152,37 @@ function gemini_migrate_d5_insert_node($n) {
     ))
     ->execute();
 
-  // insert into {field_data_body}
+}
 
-  // insert into {field_revision_body}
+/*
+ * Insert node revision into Drupal 7
+ * @node object Drupal 5 {node} object
+ * @revision Drupal 5 {node_revisions} object
+ * @table string Table name to insert into
+ */
+function gemini_migrate_d5_insert_field_body($node,$revision,$table) {
+  db_merge($table)
+    ->key(array('revision_id' => $revision->vid, 'entity_id' => $revision->nid))
+    ->fields(array(
+      'entity_id' => $revision->nid,
+      'entity_type' => 'node',
+      'bundle' => $node->type,
+      // 'deleted' => $r->deleted,
+      'revision_id' => $revision->vid,
+      'language' => 'und',
+      'delta' => '0',
+      'body_value' => $revision->body,
+      'body_summary' => $revision->teaser,
+      'body_format' => 'full_html',
+    ))
+    ->execute();
 }
 
 /* 
  * Insert {node_revision_body} into Drupal 7
  * @n object Drupal 5 node object
  */ 
-function gemini_migrate_d5_insert_node_revision_body($n) {
+function gemini_migrate_d5_insert_field_revision_body($n) {
 
   // Get Drupal 5 node revisions
   db_set_active('legacy');
@@ -166,21 +195,7 @@ function gemini_migrate_d5_insert_node_revision_body($n) {
 
   // Insert into {field_revision_body}
   foreach($result as $r) {
-    db_merge('field_revision_body')
-      ->key(array('entity_id' => $r->nid))
-      ->fields(array(
-        'entity_id' => $r->nid,
-        'entity_type' => 'node',
-        'bundle' => $n->type,
-        // 'deleted' => $r->deleted,
-        'revision_id' => $r->vid,
-        'language' => 'und',
-        // 'delta' => $r->delta,
-        'body_value' => $r->body,
-        'body_summary' => $r->teaser,
-        'body_format' => 'full_html',
-      ))
-      ->execute();
+    gemini_migrate_d5_insert_field_body($n,$r,'field_revision_body');
   }
 
 }
@@ -190,7 +205,67 @@ function gemini_migrate_d5_insert_node_revision_body($n) {
  * @n object Drupal 5 node object
  */ 
 
-function gemini_migrate_d5_insert_node_data_body($n) {
+function gemini_migrate_d5_insert_field_data_body($n) {
+
+  // Get D7 current node revision
+  $sql = "SELECT * FROM {field_revision_body} WHERE revision_id = :vid";
+
+  $result = db_query($sql, array(':vid' => $n->vid))->fetchAll();
+
+  if(count($result) > 0) {
+    $revision = $result[0];
+
+    db_merge('field_data_body')
+      ->key(array('revision_id' => $revision->revision_id, 'entity_id' => $revision->entity_id))
+      ->fields(array(
+        'entity_id' => $revision->entity_id,
+        'entity_type' => $revision->entity_type,
+        'bundle' => $revision->bundle,
+        // 'deleted' => $r->deleted,
+        'revision_id' => $revision->revision_id,
+        'language' => 'und',
+        'delta' => '0',
+        'body_value' => $revision->body_value,
+        'body_summary' => $revision->body_summary,
+        'body_format' => 'full_html',
+      ))
+      ->execute();
+  }
 
 }
 
+/*
+ * Migrate content into Drupal 7 {node_revision} table
+ */
+
+function gemini_migrate_d5_insert_node_revision($n) {
+
+  // Get Drupal 5 revisions
+  db_set_active('legacy');
+
+  $sql = "SELECT * FROM {node_revisions} WHERE nid = :nid";
+
+  $result = db_query($sql, array(':nid' => $n->nid))->fetchAll();
+
+  db_set_active('default');
+
+  // Insert each record into 
+  foreach($result as $r) {
+    db_merge('node_revision')
+      ->key(array('nid' => $r->nid, 'vid' => $r->vid))
+      ->fields(array(
+        'nid' => $r->nid,
+        'vid' => $r->vid,
+        'uid' => $r->uid,
+        'title' => $r->title,
+        'log' => $r->log,
+        'timestamp' => $r->timestamp,
+        // 'status' => $r->status,
+        // 'comment' => $r->comment,
+        // 'promote' => $r->promote,
+        // 'sticky' => $r->sticky,
+      ))
+      ->execute();
+  }
+
+}

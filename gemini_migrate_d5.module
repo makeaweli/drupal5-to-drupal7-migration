@@ -52,16 +52,18 @@ function gemini_migrate_d5_import_form() {
     '#value' => t('Start import'),
   );
 
+  // $result = gemini_migrate_d5_insert_field_data_body(1699);
+
+  // $r = $result[0];
+  // print_r($r->entity_id);
   return $form;
 }
 
 function gemini_migrate_d5_import_form_submit($form , $form_state) {
   $results = array_filter($form_state['values']['table']);
-  drupal_set_message(print_r($results , 1));
+  // drupal_set_message(print_r($results , 1));
 
   // Insert selected content type nodes
   $result = gemini_migrate_d5_insert_nodes($results);
-  drupal_set_message(print_r($result, 1));
-
 
 }
