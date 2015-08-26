@@ -1,0 +1,9 @@
+name = "Drupal 5 to Drupal 7 Migration"
+description = "Migrate content from Drupal 5 site to Drupal 7"
+package = "Gemini Observatory"
+core = 7.x
+version = "7.x-2.1"
+hidden = FALSE
+
+files[] = gemini_migrate_d5.module
+files[] = node.inc
