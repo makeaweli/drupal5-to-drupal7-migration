@@ -1,5 +1,35 @@
 <?php
 
+/*
+ * Insert nodes based on form submit resluts
+ * @node_types array of node content types that were selected
+ */
+
+function gemini_migrate_d5_insert_nodes($node_types) {
+
+  // Loop through all node types from the form
+  foreach($node_types as $node_type) {
+    // Get all nodes form specified type
+    $nodes = gemini_migrate_d5_get_nodes_by_type($node_type, 'D5');
+
+    // Insert each node into it's respective tables
+    foreach($nodes as $n) {
+      gemini_migrate_d5_insert_node($n);
+
+      // insert into {field_revision_body}
+      gemini_migrate_d5_insert_field_revision_body($n);
+
+      // insert into {field_data_body}
+      gemini_migrate_d5_insert_field_data_body($n);
+
+      // insert into {node_revision}
+      gemini_migrate_d5_insert_node_revision($n);
+
+    }
+
+  }
+}
+
 /* 
  * Query for all Drupal 5 node content types
  * @migration_source string Either D5 or D7
@@ -94,36 +124,6 @@ function gemini_migrate_d5_get_node_type_table() {
 
   return $options;
 
-}
-
-/*
- * Insert nodes based on form submit resluts
- * @node_types array of node content types that were selected
- */
-
-function gemini_migrate_d5_insert_nodes($node_types) {
-
-  // Loop through all node types from the form
-  foreach($node_types as $node_type) {
-    // Get all nodes form specified type
-    $nodes = gemini_migrate_d5_get_nodes_by_type($node_type, 'D5');
-
-    // Insert each node into it's respective tables
-    foreach($nodes as $n) {
-      gemini_migrate_d5_insert_node($n);
-
-      // insert into {field_revision_body}
-      gemini_migrate_d5_insert_field_revision_body($n);
-
-      // insert into {field_data_body}
-      gemini_migrate_d5_insert_field_data_body($n);
-
-      // insert into {node_revision}
-      gemini_migrate_d5_insert_node_revision($n);
-
-    }
-
-  }
 }
 
 /* 
