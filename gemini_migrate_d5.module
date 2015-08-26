@@ -7,17 +7,40 @@ function gemini_migrate_d5_menu() {
   $items = array();
 
   $items['admin/content/gemini_migrate_d5'] = array(
+    'type' => MENU_LOCAL_TASK,
     'title' => 'Drupal 5 to Drupal 7 Migration',
     'description' => 'Migrate content from Drupal 5 site to Drupal 7.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('gemini_migrate_d5_import_form'),
+    'page arguments' => array('gemini_migrate_d5_form_nodes'),
+    'access arguments' => array('administer site configuration'),
+    'tab_root' => 'admin/content',
+    'tab_parent' => 'admin/content'
+  );
+
+  $items['admin/content/gemini_migrate_d5/nodes'] = array(
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'title' => 'Nodes',
+    'description' => 'Migrate content from Drupal 5 site to Drupal 7.',
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/content/gemini_migrate_d5/users'] = array(
+    'type' => MENU_LOCAL_TASK,
+    'title' => 'Users',
+    'description' => 'Migrate content from Drupal 5 site to Drupal 7.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('gemini_migrate_d5_form_users'),
     'access arguments' => array('administer site configuration'),
   );
 
   return $items; 
 }
 
-function gemini_migrate_d5_import_form() {
+function gemini_migrate_d5_nodes() {
+  return "<h3>Nodes</h3>";
+}
+
+function gemini_migrate_d5_form_nodes() {
   // drupal_set_message('Are you sure you want to run the custom import script?  No going back without re-installing the database!!!', 'warning');
 
   $form['node'] = array(
