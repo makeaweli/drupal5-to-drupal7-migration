@@ -109,6 +109,8 @@ N/A
 
   + Science Operations
 
++ files
+
 # Configure SequelPro
 
 ```

@@ -35,7 +35,7 @@ function gemini_migrate_d5_menu() {
     'type' => MENU_LOCAL_TASK,
     'title' => 'User',
     'description' => 'Migrate content from Drupal 5 site to Drupal 7.',
-    'page callback' => 'gemini_migrate_d5_form_user',
+    'page callback' => 'drupal_get_form',
     'page arguments' => array('gemini_migrate_d5_form_user'),
     'access arguments' => array('administer site configuration'),
   );
