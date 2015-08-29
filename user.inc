@@ -9,15 +9,24 @@ function gemini_migrate_d5_get_form_user_table() {
 
   $options = array();
 
-  // count of D5 users
-  $source_total = count(gemini_migrate_d5_get_users('D5'));
-
-  //  count of D7 users
-  $destination_total = count(gemini_migrate_d5_get_users('D7'));
-
   $options['users'] = array(
-    'source_total' => $source_total,
-    'destination_total' => $destination_total,
+    'entity' => 'Users',
+    'source_total' => count(gemini_migrate_d5_get_users('D5')),
+    'destination_total' => count(gemini_migrate_d5_get_users('D7')),
+    'rollback' => '<a href="#?">Rollback</a>'
+  );
+
+  $options['roles'] = array(
+    'entity' => 'Roles',
+    'source_total' => count(gemini_migrate_d5_get_role('D5')),
+    'destination_total' => count(gemini_migrate_d5_get_role('D7')),
+    'rollback' => '<a href="#?">Rollback</a>'
+  );
+
+  $options['users_roles'] = array(
+    'entity' => 'Users Roles',
+    'source_total' => count(gemini_migrate_d5_get_users_roles('D5')),
+    'destination_total' => count(gemini_migrate_d5_get_users_roles('D7')),
     'rollback' => '<a href="#?">Rollback</a>'
   );
 
@@ -57,7 +66,7 @@ function gemini_migrate_d5_get_users($migration_source='D7') {
  * Insert users
  * @results array Form submit data
  */
-function gemini_migrate_d5_insert_users($results) {
+function gemini_migrate_d5_insert_users() {
   
   // Get all users from Drupal 5
   $users = gemini_migrate_d5_get_users('D5');
@@ -74,7 +83,7 @@ function gemini_migrate_d5_insert_users($results) {
 
     // Convert timezone UTC offset from Drupal 5
     $timezone = ($u->timezone == '-36000' ? 'Pacific/Honolulu' : '');
-    
+
     // Insert into Drupal 7
     db_merge('users')
       ->key(array('uid' => $u->uid))
@@ -98,6 +107,8 @@ function gemini_migrate_d5_insert_users($results) {
       ->execute();
   }
 
+  drupal_set_message('{users} table migrated');
+
 }
 
 /*
@@ -119,4 +130,111 @@ function gemini_migrate_d5_convert_password($password) {
   }
 
   return $new_hash;
+}
+
+/*
+ * Query for all Drupal {role}
+ * @migration_source string Values either D5 or D7
+ * @return array SQL objects
+ */
+function gemini_migrate_d5_get_role($migration_source='D7') {
+
+  switch($migration_source) {
+
+    case 'D5': 
+      db_set_active('legacy');
+      break;
+
+    case 'D7':
+    default:
+      db_set_active('default');
+      break;
+  }
+
+  $sql = "SELECT * FROM {role}";
+
+  $result = db_query($sql)->fetchAll();
+
+  db_set_active('default');
+
+  return $result;
+}
+
+
+/*
+ * Insert Drupal 7 {role}
+ */
+function gemini_migrate_d5_insert_role() {
+
+  // Get Drupal 5 role objects
+  $roles = gemini_migrate_d5_get_role('D5');
+
+  // Insert into Drupal 7
+  foreach($roles as $r) {
+    db_merge('role')
+      ->key(array(
+          'rid' => $r->rid
+        ))
+      ->fields(array(
+          'rid' => $r->rid,
+          'name' => $r->name,
+          'weight' => '1'
+        ))
+      ->execute();
+  }
+
+  drupal_set_message('{role} table migrated');
+}
+
+/*
+ * Query for all Drupal {users_roles}
+ * @migration_source string Values either D5 or D7
+ * @return array SQL objects
+ */
+function gemini_migrate_d5_get_users_roles($migration_source='D7') {
+
+  switch($migration_source) {
+
+    case 'D5': 
+      db_set_active('legacy');
+      break;
+
+    case 'D7':
+    default:
+      db_set_active('default');
+      break;
+  }
+
+  $sql = "SELECT * FROM {users_roles}";
+
+  $result = db_query($sql)->fetchAll();
+
+  db_set_active('default');
+
+  return $result;
+}
+
+/*
+ * Insert Drupal 7 {users_roles}
+ */
+function gemini_migrate_d5_insert_users_roles() {
+
+  // Get Drupal 5 role objects
+  $users_roles = gemini_migrate_d5_get_users_roles('D5');
+
+  // Insert into Drupal 7
+  foreach($users_roles as $u) {
+    db_merge('users_roles')
+      ->key(array(
+          'uid' => $u->uid,
+          'rid' => $u->rid
+        ))
+      ->fields(array(
+          'uid' => $u->uid,
+          'rid' => $u->rid,
+        ))
+      ->execute();
+  }
+
+  drupal_set_message('{users_roles} table migrated');
 }

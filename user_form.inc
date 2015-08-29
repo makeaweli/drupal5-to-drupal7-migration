@@ -11,6 +11,7 @@ function gemini_migrate_d5_form_user() {
   );
 
   $header = array(
+    'entity' => ('Entity'),
     'source_total' => t('Source'),
     'destination_total' => t('Destination'),
     'rollback' => t('Rollback')
@@ -19,6 +20,7 @@ function gemini_migrate_d5_form_user() {
   $options = gemini_migrate_d5_get_form_user_table();
 
   $form['user']['table'] = array(
+    '#title' => 'Users',
     '#type' => 'tableselect',
     '#header' => $header,
     '#options' => $options,
@@ -39,9 +41,25 @@ function gemini_migrate_d5_form_user_submit($form , $form_state) {
   $results = array_filter($form_state['values']['table']);
   // drupal_set_message(print_r($results , 1));
 
-  // Insert selected content type nodes
-  gemini_migrate_d5_insert_users($results);
+  foreach ($results as $r) {
+    
+    switch ($r) {
+      case 'users':
+        gemini_migrate_d5_insert_users();
+        break;
 
-  echo 'test';
+      case 'roles':
+        gemini_migrate_d5_insert_role();
+        break;
+
+      case 'users_roles':
+        gemini_migrate_d5_insert_users_roles();
+        break;
+    }
+  }
+  // Insert selected content type nodes
+  // gemini_migrate_d5_insert_users($results);
+
+  
 
 }
