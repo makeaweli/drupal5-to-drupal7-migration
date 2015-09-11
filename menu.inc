@@ -103,6 +103,23 @@ function gemini_migrate_d5_menu_type_children_exists($mid) {
 
 }
 
+/*
+ * Check if Drupal 5 menu item has any children
+ * @param $mid int Drupal 5 menu ID
+ */
+function gemini_migrate_d5_menu_item_has_children($mid) {
+  $result = gemini_migrate_d5_get_menu('D5');
+  $menu = gemini_migrate_d5_menu_flat($result);
+
+  foreach($menu as $m) {
+    if($m['pid'] == $mid) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 /* 
  * Get last insert id for Drupal 7 {menu_links}
  */
@@ -329,10 +346,10 @@ function gemini_migrate_d5_insert_menu($menus) {
                 'link_title' => $D5['title'],
                 'options' => 'a:0:{}',
                 'module' => 'menu',
-                // 'hidden' => $D5['hidden'],
+                'hidden' => ($D5['type'] & MENU_VISIBLE_IN_TREE) ? '0' : '1',
                 'external' => (substr($D5['path'], 0,4) == 'http') ? '1' : '0',
-                // 'has_children' => $D5['has_children'],
-                // 'expanded' => $D5['expanded'],
+                'has_children' => (gemini_migrate_d5_menu_item_has_children($D5['mid'])) ? '1' : '0',
+                'expanded' => ($D5['type'] & MENU_EXPANDED) ? '1' : '0',
                 'weight' => $D5['weight'],
                 'depth' => count($D5['full_path'])-1,
                 // 'customized' => $D5['customized'],

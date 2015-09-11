@@ -1,5 +1,10 @@
 <?php
 
+define('MENU_EXPANDED', 0x0100);
+// define('MENU_LINKS_TO_PARENT', 0x0200);
+
+// define('MENU_NORMAL_ITEM', MENU_VISIBLE_IN_TREE | MENU_VISIBLE_IN_BREADCRUMB | MENU_MODIFIABLE_BY_ADMIN);
+
 function gemini_migrate_d5_form_menu() {
   // drupal_set_message('Are you sure you want to run the custom import script?  No going back without re-installing the database!!!', 'warning');
 
