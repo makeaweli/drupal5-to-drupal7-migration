@@ -60,7 +60,14 @@ function gemini_migrate_d5_get_menu_types($migration_source = 'D7'){
            'mid' => '1',
            'pid' => '0',
            'title' => 'Navigation'
-         );
+       );
+
+      // Manually add Admin menu
+      $result[] = (object) array(
+        'mid' => '5',
+        'pid' => '0',
+        'title' => 'Navigation/Admin'
+      );
 
       db_set_active('default');
 
