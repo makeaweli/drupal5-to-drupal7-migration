@@ -1,16 +1,12 @@
 <?php
 
+// Copy Drupal 5 constant
 define('MENU_EXPANDED', 0x0100);
-// define('MENU_LINKS_TO_PARENT', 0x0200);
-
-// define('MENU_NORMAL_ITEM', MENU_VISIBLE_IN_TREE | MENU_VISIBLE_IN_BREADCRUMB | MENU_MODIFIABLE_BY_ADMIN);
 
 function gemini_migrate_d5_form_menu() {
   // drupal_set_message('Are you sure you want to run the custom import script?  No going back without re-installing the database!!!', 'warning');
 
   $form['menu'] = array(
-    // '#type' => 'fieldset',
-    // '#title' => t('Node'),
     '#collapsible' => FALSE,
     '#collapsed' => FALSE
   );
@@ -39,40 +35,6 @@ function gemini_migrate_d5_form_menu() {
     '#type' => 'submit',
     '#value' => t('Start import'),
   );
-
-  // $result = gemini_migrate_d5_get_menu('D5');
-  // $result = gemini_migrate_d5_menu_flat($result);
-  // // print_r($result);
-  // $result = gemini_migrate_d5_menu_path('788', $result);
-
-  // for($i=0; $i<312; $i++) {
-  //  drupal_set_message(print_r(gemini_migrate_d5_menu_path($result[$i]['mid'], $result)));
-  // }
-
-  // drupal_set_message($result[311]['mid']);
-  // drupal_set_message(print_r(gemini_migrate_d5_menu_path($result[311]['mid'], $result)));
-  // drupal_set_message(print_r(gemini_migrate_d5_menu_path('5', $result)));
-
-  // $result = gemini_migrate_d5_menu_array();
-
-  // print_r($result);
-
-  // drupal_set_message(print_r(gemini_migrate_d5_menu_path('921', $result)));
-
-  // $m7 = gemini_migrate_d5_get_menu_types('D7');
-
-  // print_r($m7);
-
-  // print_r(gemini_migrate_d5_map_menu_custom());
-  // $menu_customs = gemini_migrate_d5_map_menu_custom();
-
-  // $menu_custom_index = array_search('Science Operations', arrayColumn($menu_customs, 'title'));
-  // $menu_custom = $menu_customs[$menu_custom_index];
-  
-
-  // print_r($menu_custom);
-
- // echo (substr('http://www.gemini.edu', 0,4) == 'http') ? 'matches' : 'no match';
 
   return $form;
 }

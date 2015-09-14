@@ -1,22 +1,5 @@
 <?php
 
-/*
- SELECT t1.title AS lev1, t2.title as lev2, t3.title as lev3, t4.title as lev4, t5.title as lev5, t6.title as lev6, t7.title as lev7, t8.title as lev8, t9.title as lev9
- FROM menu AS t1
- LEFT JOIN `menu` AS t2 ON t2.pid = t1.mid
- LEFT JOIN `menu` AS t3 ON t3.pid = t2.mid
- LEFT JOIN `menu` AS t4 ON t4.pid = t3.mid
- LEFT JOIN `menu` AS t5 ON t5.pid = t4.mid
- LEFT JOIN `menu` AS t6 ON t6.pid = t5.mid
- LEFT JOIN `menu` AS t7 ON t7.pid = t6.mid
- LEFT JOIN `menu` AS t8 ON t8.pid = t7.mid
- LEFT JOIN `menu` AS t9 ON t9.pid = t8.mid
- WHERE t1.title = 'Science Operations';
-*/
-
-/* Query for all menu records
- * $migration_source string Value is either D7 or D5
- */
 function gemini_migrate_d5_get_menu($migration_source='D7') {
 
   switch($migration_source) {
@@ -424,43 +407,4 @@ function gemini_migrate_d5_menu_array() {
   }
 
   return $menu;
-}
-
-/*
- * Insert {menu_link} into Drupal 7
- * @param object Drupal 5 {menu} object
- */
-function gemini_migrate_d5_insert_menu_link($m) {
-
-  // check if external link
-
-  // check if it's the first child
-
-
-  // menu_name
-  // mlid
-  // plid
-  // link_path
-  // router_path
-  // link_title
-  // options
-  // module
-  // hidden
-  // external
-  // has_children
-  // expanded
-  // weight
-  // depth
-  // customized
-  // p1
-  // p2
-  // p3
-  // p4
-  // p5
-  // p6
-  // p7
-  // p8
-  // p9
-  // updated
-
 }

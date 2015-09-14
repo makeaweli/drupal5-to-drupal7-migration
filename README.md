@@ -35,16 +35,6 @@ N/A
 
 # Migration
 
-## Migration prep
-
-+ Content types
-
-+ Roles
-
-+ CCK fields
-
-+ views
-
 ## Modules
 
 + ldap
@@ -99,8 +89,6 @@ N/A
 
 + user roles
 
-+ pathauto
-
 + menu
 
   + Navigation
@@ -109,7 +97,12 @@ N/A
 
   + Science Operations
 
++ pathauto
+
 + files
+
++ views
+
 
 # Configure SequelPro
 
