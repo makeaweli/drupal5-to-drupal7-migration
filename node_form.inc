@@ -30,11 +30,6 @@ function gemini_migrate_d5_form_node() {
     '#value' => t('Submit'),
   );
 
-  $form['submit_import'] = array(
-    '#type' => 'submit',
-    '#value' => t('Start import'),
-  );
-
   // $result = gemini_migrate_d5_insert_field_data_body(1699);
 
   // $r = $result[0];
@@ -42,9 +37,9 @@ function gemini_migrate_d5_form_node() {
   return $form;
 }
 
-function gemini_migrate_d5_import_form_submit($form , $form_state) {
+function gemini_migrate_d5_form_node_submit($form , $form_state) {
   $results = array_filter($form_state['values']['table']);
-  // drupal_set_message(print_r($results , 1));
+  drupal_set_message(print_r($results , 1));
 
   // Insert selected content type nodes
   $result = gemini_migrate_d5_insert_nodes($results);
