@@ -111,6 +111,16 @@ function gemini_migrate_d5_menu_item_has_children($mid) {
 }
 
 /* 
+ * Get Drupal 7 {menu_links} for specified menu_name
+ * @param $menu_name string 
+ */
+function gemini_migrate_d5_get_menu_links_by_menu_name($menu_name) {
+  $sql = 'SELECT * FROM {menu_links} WHERE menu_name = :menu_name';
+
+  return db_query($sql, array(':menu_name' => $menu_name))->fetchAll();
+}
+
+/* 
  * Get last insert id for Drupal 7 {menu_links}
  */
 function gemini_migrate_d5_get_menu_links_last_insert_id() {
@@ -132,32 +142,33 @@ function gemini_migrate_d5_get_menu_links_last_insert_id() {
  */
 function gemini_migrate_d5_get_menu_type_table() {
 
+  // Get Drupal 5 menu items with ful path
+  $D5_menu_items = gemini_migrate_d5_menu_array();
+
   // Get menu parents
   $menu_types = gemini_migrate_d5_get_menu_types('D5');
 
-  // Get Drupal 7 {menu_custom}
-  $menu_custom = gemini_migrate_d5_get_menu_types('D7');
-
-  // Reduce $menu_custom into $M7
-  $M7 = array();
-
-  foreach($menu_custom as $mc) {
-    $M7[] = $mc->title;
-  }
+  // Get map of Drupal 5 & Drupal 7 {menu_custom}
+  $menu_customs = gemini_migrate_d5_map_menu_custom();
 
   $options = array();
 
   foreach($menu_types as $mt){
     if(gemini_migrate_d5_menu_type_children_exists($mt->mid)) {
-      $source_total = '0';
+      
+      // Get {menu_custom} data
+      $menu_custom_key = array_search($mt->title, arrayColumn($menu_customs, 'title'));
 
-      $destination_total = (in_array($mt->title, $M7)) ? '0' : l('No matching menu type', 'admin/structure/menu/add');
+      $menu_custom = $menu_customs[$menu_custom_key];
+          
+      $source_total = count(array_keys(arrayColumn($D5_menu_items, 'menu_root_title'), $mt->title));
+
+      $destination_total = ($mt->title == $menu_custom['title']) ? count(gemini_migrate_d5_get_menu_links_by_menu_name($menu_custom['menu_name'])) : l('No matching menu type', 'admin/structure/menu/add');
 
       $options[$mt->title] = array(
         'menu_type' => $mt->title,
         'source_total' => $source_total,
         'destination_total' => $destination_total,
-        'rollback' => 'x',
       );
     }
   }
@@ -262,7 +273,16 @@ function array_flatten(array $array)
 /* 
  * Array of Drupal 7 {menu_custom} that map with Drupal 5
  * @return object
- */
+  Array
+  (
+      [0] => Array
+          (
+              [menu_name] => navigation
+              [title] => Navigation
+          )
+
+  )
+   */
 function gemini_migrate_d5_map_menu_custom() {
   // Create array 
   $menu_custom = array();
@@ -371,6 +391,26 @@ function gemini_migrate_d5_insert_menu($menus) {
 
 /*
  * Create array of Drupal 5 {menu} with full path
+ * @return Array, example output
+[0] => Array
+        (
+            [mid] => 44
+            [pid] => 91
+            [title] => Archived Pages
+            [weight] => 0
+            [type] => 118
+            [path] => http://internal.gemini.edu/telescope/index.html
+            [full_path] => Array
+                (
+                    [0] => 1
+                    [1] => 91
+                    [2] => 44
+                )
+
+            [menu_root] => 1
+            [menu_root_title] => Navigation
+        )
+
  */
 function gemini_migrate_d5_menu_array() {
 

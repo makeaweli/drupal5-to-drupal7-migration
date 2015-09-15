@@ -11,6 +11,8 @@ module_load_include('inc', 'gemini_migrate_d5', 'user');
 module_load_include('inc', 'gemini_migrate_d5', 'user_form');
 module_load_include('inc', 'gemini_migrate_d5', 'menu');
 module_load_include('inc', 'gemini_migrate_d5', 'menu_form');
+module_load_include('inc', 'gemini_migrate_d5', 'url_alias');
+module_load_include('inc', 'gemini_migrate_d5', 'url_alias_form');
 
 function gemini_migrate_d5_menu() {
   $items = array();
@@ -49,6 +51,16 @@ function gemini_migrate_d5_menu() {
     'description' => 'Migrate content from Drupal 5 site to Drupal 7.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('gemini_migrate_d5_form_menu'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/content/gemini_migrate_d5/url_alias'] = array(
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 4,
+    'title' => 'URL Alias',
+    'description' => 'Migrate content from Drupal 5 site to Drupal 7.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('gemini_migrate_d5_form_url_alias'),
     'access arguments' => array('administer site configuration'),
   );
 

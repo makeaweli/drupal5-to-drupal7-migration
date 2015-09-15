@@ -1,9 +1,9 @@
 <?php
 
 // Copy Drupal 5 constant
-// define('MENU_EXPANDED', 0x0100);
+define('MENU_EXPANDED', 0x0100);
 
-function gemini_migrate_d5_form_menu() {
+function gemini_migrate_d5_form_url_alias() {
   // drupal_set_message('Are you sure you want to run the custom import script?  No going back without re-installing the database!!!', 'warning');
 
   $form['menu'] = array(
@@ -14,12 +14,13 @@ function gemini_migrate_d5_form_menu() {
   $header = array(
     'menu_type' => t('Menu Type'),
     'source_total' => t('Source'),
-    'destination_total' => t('Destination')
+    'destination_total' => t('Destination'),
+    'rollback' => t('Rollback')
   );
 
   $options = gemini_migrate_d5_get_menu_type_table();
 
-  $form['menu']['table'] = array(
+  $form['url_alias']['table'] = array(
     '#type' => 'tableselect',
     '#header' => $header,
     '#options' => $options,
@@ -38,7 +39,7 @@ function gemini_migrate_d5_form_menu() {
   return $form;
 }
 
-function gemini_migrate_d5_form_menu_submit($form , $form_state) {
+function gemini_migrate_d5_form_url_alias_submit($form , $form_state) {
   $results = array_filter($form_state['values']['table']);
   // drupal_set_message(print_r($results , 1));
 
