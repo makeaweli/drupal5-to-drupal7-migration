@@ -12,13 +12,12 @@ function gemini_migrate_d5_form_url_alias() {
   );
 
   $header = array(
-    'menu_type' => t('Menu Type'),
+    'alias_type' => t('Alias Type'),
     'source_total' => t('Source'),
     'destination_total' => t('Destination'),
-    'rollback' => t('Rollback')
   );
 
-  $options = gemini_migrate_d5_get_menu_type_table();
+  $options = gemini_migrate_d5_get_url_alias_type_table();
 
   $form['url_alias']['table'] = array(
     '#type' => 'tableselect',
@@ -36,6 +35,9 @@ function gemini_migrate_d5_form_url_alias() {
     '#value' => t('Start import'),
   );
 
+  
+  // print_r($result);
+
   return $form;
 }
 
@@ -44,8 +46,8 @@ function gemini_migrate_d5_form_url_alias_submit($form , $form_state) {
   // drupal_set_message(print_r($results , 1));
 
   // Insert selected content type nodes
-  $result = gemini_migrate_d5_insert_menu($results);
+  $result = gemini_migrate_d5_insert_url_alias($results);
 
-  drupal_set_message(print_r($result , 1));
+  // drupal_set_message(print_r($result , 1));
 
 }
