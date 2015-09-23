@@ -100,26 +100,3 @@ N/A
 ## Example of repeatable output for testing
 
 N/A
-
-## Using Vagrant for development
-
-# Configure SequelPro
-
-```
-mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY '' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-```
-
-## SequelPro settings
-
-+ MySQL Host: 127.0.0.1
-
-+ Username: root
-
-+ SSH Host: localhost
-
-+ SSH User: vagrant
-
-+ SSH Password: vagrant
-
-+ SSh Port: 2222
-
