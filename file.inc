@@ -37,8 +37,8 @@ function gemini_migrate_d5_insert_file($form_value) {
       $nr = array_filter($node_revisions, array(new GeminiMigrateD5UtilityFile($vid, 'vid'), 'isEqual'));
       // reindex array
       $nr = array_values($nr);
-      $uid = $nr[0]['uid'];
-      $timestamp = $nr[0]['timestamp'];
+      $uid = (isset($nr[0]['uid'])) ? $nr[0]['uid'] : 0;
+      $timestamp = (isset($nr[0]['timestamp'])) ? $nr[0]['timestamp'] : 0;
 
       db_merge('file_managed')
         ->key(array('fid' => $f['fid']))
@@ -154,7 +154,9 @@ WHERE files.nid = node.nid';
     
     case 'D7':
     default:
-      $sql = 'SELECT * FROM {field_data_field_file}';
+      $sql = 'SELECT DISTINCT file_managed.*, field_revision_field_file.`bundle`
+              FROM file_managed, field_revision_field_file
+              WHERE file_managed.`fid` = field_revision_field_file.`field_file_fid`';
 
       $result = db_query($sql)->fetchAll(PDO::FETCH_ASSOC);
 
