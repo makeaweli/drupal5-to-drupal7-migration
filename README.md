@@ -2,7 +2,7 @@
 
 ## Purpose of project
 
-Drupal 7 Module to automate the migration of data from Drupal 5 to Drupal 7. Data can be selectively migrated based on type.
+Drupal 7 module to automate the migration of data from Drupal 5 to Drupal 7. Data can be selectively migrated based on type.
 
 ## Migrations Available
 
@@ -19,6 +19,16 @@ Drupal 7 Module to automate the migration of data from Drupal 5 to Drupal 7. Dat
 + url alias
 
 + files (this is in rough shape, use with caution)
+
+## Usage
+
++ Configure legacy datbase settings.
+
++ View the module page:
+
+```
+?q=admin/content/gemini_migrate_d5/url_alias
+```
 
 ## Configuration
 
