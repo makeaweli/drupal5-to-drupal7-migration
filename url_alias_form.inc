@@ -30,14 +30,6 @@ function gemini_migrate_d5_form_url_alias() {
     '#value' => t('Submit'),
   );
 
-  $form['submit_import'] = array(
-    '#type' => 'submit',
-    '#value' => t('Start import'),
-  );
-
-  
-  // print_r($result);
-
   return $form;
 }
 

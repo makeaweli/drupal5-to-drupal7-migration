@@ -27,26 +27,6 @@ function gemini_migrate_d5_form_file() {
     '#value' => t('Submit'),
   );
 
-  $form['submit_import'] = array(
-    '#type' => 'submit',
-    '#value' => t('Start import'),
-  );
-
-  // $file_revisions = gemini_migrate_d5_get_file_revisions();
-  // $result = array_filter($file_revisions, array(new GeminiMigrateD5UtilityFile('287', 'fid'), 'isEqual'));
-  // $vids = arrayColumn($result, 'vid');
-  // //  rsort($vids);
-  // $vid = $vids[0];
-
-  // $result = array_filter(gemini_migrate_d5_get_node_revisions(), array(new GeminiMigrateD5UtilityFile($vid, 'vid'), 'isEqual'));
-
-  // $result = array_values($result);
-  // print_r($result[0]['uid']);
-  // 
-  // $result = gemini_migrate_d5_get_current_file_revisions('blog');
-
-  // print_r($result);
-
   return $form;
 }
 
