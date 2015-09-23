@@ -4,6 +4,22 @@
 
 Drupal 7 Module to automate the migration of data from Drupal 5 to Drupal 7. Data can be selectively migrated based on type.
 
+## Migrations Available
+
++ nodes with revisions
+
++ users 
+
++ roles
+
++ user roles
+
++ menu
+
++ url alias
+
++ files (this is in rough shape, use with caution)
+
 ## Configuration
 
 Add a new database connection for your Drupal 5 database to your settings.php named 'legacy':
@@ -42,22 +58,6 @@ $databases = array (
 );  
 
 ```
-
-## Migrations Available
-
-+ nodes with revisions
-
-+ users 
-
-+ roles
-
-+ user roles
-
-+ menu
-
-+ url alias
-
-+ files (this is in rough shape, use with caution)
 
 ## System Requirements
 
@@ -102,9 +102,14 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED B
 ## SequelPro settings
 
 + MySQL Host: 127.0.0.1
+
 + Username: root
+
 + SSH Host: localhost
+
 + SSH User: vagrant
+
 + SSH Password: vagrant
+
 + SSh Port: 2222
 
