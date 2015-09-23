@@ -22,7 +22,7 @@ Drupal 7 module to automate the migration of data from Drupal 5 to Drupal 7. Dat
 
 ## Usage
 
-+ Configure legacy datbase settings.
++ Configure legacy database settings.
 
 + View the module page:
 
