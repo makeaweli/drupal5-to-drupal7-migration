@@ -4,6 +4,9 @@
 
 Drupal 7 module to automate the migration of data from Drupal 5 to Drupal 7. Data can be selectively migrated based on type.
 
+Details on this blog post:
+http://makea.kalawe.com/drupal-5-to-drupal-7-migration/
+
 ## Migrations Available
 
 + nodes with revisions
