@@ -10,9 +10,11 @@ Drupal 7 module to automate the migration of data from Drupal 5 to Drupal 7. Dat
 
 + users 
 
-+ roles
++ roles (only roles that are active)
 
-+ user roles
++ user roles (only roles that are active)
+
++ permissions
 
 + menu
 

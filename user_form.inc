@@ -13,8 +13,7 @@ function gemini_migrate_d5_form_user() {
   $header = array(
     'entity' => ('Entity'),
     'source_total' => t('Source'),
-    'destination_total' => t('Destination'),
-    'rollback' => t('Rollback')
+    'destination_total' => t('Destination')
   );
 
   $options = gemini_migrate_d5_get_form_user_table();
@@ -54,6 +53,10 @@ function gemini_migrate_d5_form_user_submit($form , $form_state) {
 
       case 'users_roles':
         gemini_migrate_d5_insert_users_roles();
+        break;
+
+      case 'permissions':
+        gemini_migrate_d5_insert_permissions();
         break;
     }
   }
