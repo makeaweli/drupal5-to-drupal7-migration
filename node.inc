@@ -117,8 +117,7 @@ function gemini_migrate_d5_get_node_type_table() {
     $options[$node_type] = array(
       'node_type' => $node_type,
       'source_total' => $source_total,
-      'destination_total' => $destination_total,
-      'rollback' => '<a href="#?">Rollback</a>'
+      'destination_total' => $destination_total
     );
   }
 

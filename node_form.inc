@@ -14,7 +14,6 @@ function gemini_migrate_d5_form_node() {
     'node_type' => t('Content Type'),
     'source_total' => t('Source'),
     'destination_total' => t('Destination'),
-    'rollback' => t('Rollback')
   );
 
   $options = gemini_migrate_d5_get_node_type_table();

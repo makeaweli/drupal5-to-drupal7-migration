@@ -32,6 +32,10 @@ Drupal 7 module to automate the migration of data from Drupal 5 to Drupal 7. Dat
 ?q=admin/content/gemini_migrate_d5/url_alias
 ```
 
+## Screenshot
+
+![Alt text](docs/screenshot-node.png?raw=true "Screenshot of node tab")
+
 ## Configuration
 
 Add a new database connection for your Drupal 5 database to your settings.php named 'legacy':
